@@ -4,7 +4,7 @@ class SinhVien{
   String email;
 
   SinhVien({this.id, required this.name, required this.email});
-  Map<String, dynamic> ToMap(){
+  Map<String, dynamic> toMap(){
     return {'id': id, 'name': name, 'email': email};
   }
 
