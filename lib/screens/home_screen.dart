@@ -11,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final StudentService services = StudentService();
   List<SinhVien> sinhvien = []; 
+  TextEditingController searchController = TextEditingController();
+  List<SinhVien> filteredList = [];
 
   @override
   void initState(){
@@ -20,8 +22,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void loadData() async{
     sinhvien = await services.getStudents();
+    filteredList = sinhvien;
     setState(() {});
   }
+
+  void search(String keyword) {
+  setState(() {
+    filteredList = sinhvien.where((s) {
+      return s.name.toLowerCase().contains(keyword.toLowerCase());
+    }).toList();
+  });
+}
 
   void showAddDialog(){
     TextEditingController name = TextEditingController();
@@ -119,45 +130,76 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Quản lý sinh viên"),
       ),
-      body: ListView.builder(
-        itemCount: sinhvien.length,
-        itemBuilder: (_, i){
-          final s = sinhvien[i];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 4,
-                    offset: Offset(0, 2)
-                  )
-                ]
-              ),
-              child:  ListTile(
-              leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo.png'),
-              ),
-              title: Text(s.name),
-              subtitle: Text(s.email),
-              trailing: IconButton(
-                onPressed: () async{
-                  await services.deleteStudent(s.id!);
-                  loadData();
+      body: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: TextField(
+            controller: searchController,
+            onChanged: search,
+            decoration: InputDecoration(
+              hintText: "Tìm kiếm sinh viên...",
+              prefixIcon: Icon(Icons.search),
+              suffixIcon: IconButton(
+                onPressed: (){
+                  searchController.clear();
+                  search("");
                 }, 
-                icon: Icon(Icons.delete, color: Colors.red,),
+              icon: Icon(Icons.clear),
               ),
-              onTap: (){
-                showEditDialog(s);
-              },
-            )
+              filled: true,
+              fillColor: Colors.grey[200],
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide.none,
+              ),
             ),
-          );
-        }
-      ),
+          ),
+        ),
+
+        Expanded(
+          child: ListView.builder(
+            itemCount: filteredList.length, // 👈 dùng filteredList
+            itemBuilder: (_, i) {
+              final s = filteredList[i];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      )
+                    ],
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage('assets/images/logo.png'),
+                    ),
+                    title: Text(s.name),
+                    subtitle: Text(s.email),
+                    trailing: IconButton(
+                      onPressed: () async {
+                        await services.deleteStudent(s.id!);
+                        loadData();
+                      },
+                      icon: Icon(Icons.delete, color: Colors.red),
+                    ),
+                    onTap: () {
+                      showEditDialog(s);
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    ),
       floatingActionButton: FloatingActionButton(onPressed: showAddDialog, child: Icon(Icons.add),),
     );
   }
