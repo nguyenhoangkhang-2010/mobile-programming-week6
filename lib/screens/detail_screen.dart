@@ -39,22 +39,48 @@ class _DetailScreenState extends State<DetailScreen> {
               controller: email,
               decoration: InputDecoration(labelText: "Email"),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await service.updateStudent(
-                  SinhVien(
-                    id: widget.sinhvien.id,
-                    name: name.text,
-                    email: email.text,
-                  ),
-                );
-                Navigator.pop(context);
-              },
-              child: Text("Cập nhật"),
-            )
           ],
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              minimumSize: Size(100, 40),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text(
+              "Hủy", 
+              style: TextStyle(fontSize: 20),
+              ),
+          ),
+          SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: () async{
+              await service.updateStudent(
+                SinhVien(
+                  id: widget.sinhvien.id,
+                  name: name.text,
+                  email: email.text),
+              );
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              minimumSize: Size(100, 40),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text("Lưu", style: TextStyle(fontSize: 20)),
+          ),
+        ],
+        )
       ),
     );
   }
