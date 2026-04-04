@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(controller: name, decoration: InputDecoration(labelText: "Tên")),
-            TextField(controller: email, decoration: InputDecoration(labelText: "email")),
+            TextField(controller: email, decoration: InputDecoration(labelText: "Email")),
           ],
         ),
         actions: [
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
-      title: Text("Cập nhật sinh viên"),
+      title: Text("Chi tiết sinh viên"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -79,12 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text("Hủy"),
         ),
-
         ElevatedButton(
           onPressed: () async {
             await services.updateStudent(
@@ -94,7 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 email: email.text,
               ),
             );
-
             Navigator.pop(context);
             loadData();
           },
