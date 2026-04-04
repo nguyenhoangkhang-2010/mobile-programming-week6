@@ -68,7 +68,17 @@ class _HomeScreenState extends State<HomeScreen> {
       title: Text("Chi tiết sinh viên"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            "Dữ liệu: ${s.id} - ${s.name}",
+              style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+            textAlign: TextAlign.left,
+          ),
           TextField(
             controller: name,
             decoration: InputDecoration(labelText: "Tên"),

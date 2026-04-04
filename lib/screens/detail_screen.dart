@@ -26,7 +26,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Chi tiết sinh viên")),
+      appBar: AppBar(title: Text("Thông tin chi tiết sinh viên")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
