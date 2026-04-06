@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:app_week_6/models/student.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
